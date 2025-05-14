@@ -12,9 +12,22 @@ import LavoraConNoi from './components/LavoraCoNoi';
 import Privacy from './components/Privacy';
 import PokeMenuItem from './components/PokeMenuItem';
 import FAQSection from './components/FAQSection';
+import Restoraint from './components/Restoraint';
+import Footer from './components/Footer';
 
 const HomePage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPokeItem, setSelectedPokeItem] = useState(null);
+
+  const handleOpenModal = (item) => {
+    setSelectedPokeItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPokeItem(null);
+  };
 
   const heroProps = {
     title: 'Consegna di cibo a domicilio e molto altro',
@@ -37,14 +50,12 @@ const HomePage = () => {
     {
       image: '/images/logo_rest.svg',
       title: 'I migliori ristoranti della tua città',
-      description:
-        'Approfitta di un\'ampia varietà di ristoranti per ordinare i tuoi piatti preferiti oppure **trovane di nuovi nei dintorni!**',
+      description: 'Approfitta di un\'ampia varietà di ristoranti per ordinare i tuoi piatti preferiti oppure **trovane di nuovi nei dintorni!**',
     },
     {
       image: '/images/delivery.svg',
       title: 'Consegna rapida',
-      description:
-        'Siamo velocissimi! Ordina o invia qualsiasi cosa nella tua città: **lo riceverai nel giro di qualche minuto**',
+      description: 'Siamo velocissimi! Ordina o invia qualsiasi cosa nella tua città: **lo riceverai nel giro di qualche minuto**',
     },
   ];
 
@@ -52,16 +63,14 @@ const HomePage = () => {
     {
       image: '/images/rider.png',
       title: 'Diventa un rider',
-      description:
-        'Goditi flessibilità, libertà e guadagni competitivi effettuando consegne tramite Glovo.',
+      description: 'Goditi flessibilità, libertà e guadagni competitivi effettuando consegne tramite Glovo.',
       buttonText: 'Registrati qui',
       buttonLink: '#',
     },
     {
       image: '/images/partner.png',
       title: 'Diventa partner',
-      description:
-        'Cresci con Glovo! La nostra tecnologia e la nostra base di utenti possono aiutarti a incrementare le vendite e cogliere nuove opportunità!',
+      description: 'Cresci con Glovo! La nostra tecnologia e la nostra base di utenti possono aiutarti a incrementare le vendite e cogliere nuove opportunità!',
       buttonText: 'Registrati qui',
       buttonLink: '#',
     },
@@ -75,12 +84,23 @@ const HomePage = () => {
 
   const pokeItems = [
     {
+      name: 'Salmone pokè',
+      description: 'Base riso sushi, tonno, alghe nori, cavolo rosso, carote, surimi, salsa sriracha, peperoncino, uova di pesce e cipolla fritta',
+      price: '10,90 €',
+      image: '/images/salmonepoke.jpg',
+    },
+    {
+      name: 'Tofu pokè',
+      description: 'Base riso sushi, tonno, alghe nori, cavolo rosso, carote, surimi, salsa sriracha, peperoncino, uova di pesce e cipolla fritta',
+      price: '10,90 €',
+      image: '/images/tofupoke.jpg',
+    },
+    {
       name: 'Spicy pokè',
       description: 'Base riso sushi, tonno, alghe nori, cavolo rosso, carote, surimi, salsa sriracha, peperoncino, uova di pesce e cipolla fritta',
       price: '10,90 €',
-      image: '/images/spicypoke.jpg',
-    },
-    // Aggiungi altri elementi del menu pokè qui
+      image: '/images/tonnopoke.jpg',
+    }
   ];
 
   const faqs = [
@@ -90,7 +110,7 @@ const HomePage = () => {
     },
     {
       question: 'È prevista una spesa minima da Poké Club?',
-      answer: 'Poké Club prevede un minimo d\'ordine. Ma non preoccuparti. Se non dovessi raggiungerlo, pagherai soltanto un supplemento, ma ti consegneremo comunque il tuo glovo a domicilio!',
+      answer: "Poké Club prevede un minimo d'ordine. Ma non preoccuparti. Se non dovessi raggiungerlo, pagherai soltanto un supplemento, ma ti consegneremo comunque il tuo glovo a domicilio!",
     },
     {
       question: 'Poké Club è disponibile su Prime?',
@@ -98,73 +118,72 @@ const HomePage = () => {
     },
   ];
 
-  const handleSubmitIndirizzo = (indirizzo) => {
-    console.log('Indirizzo inserito:', indirizzo);
-    setIsModalOpen(false);
-    // Qui puoi aggiungere la logica per gestire l'indirizzo inserito
-  };
-
   return (
     <div className="flex flex-col">
-      {/* Navbar in una sezione */}
-      <section className="bg-white shadow">
-        <NavbarSection deliveryLocation="Roma, Italia" />
-      </section>
+      <NavbarSection deliveryLocation="Roma, Italia" />
 
-      {/* Hero */}
-      <section className="bg-yellow-50 py-10">
+      <section className="bg-yellow-50 py-14">
         <LandingHero {...heroProps} />
       </section>
 
-      {/* Sidebar come blocco verticale */}
       <section className="bg-gray-50 py-10">
         <div className="container mx-auto px-4">
           <SideBar filters={sidebarFilters} />
         </div>
       </section>
 
-      {/* Ristoranti */}
       <section className="bg-white py-10">
-        <Ristoranti
-          title="Italia: i migliori ristoranti e molto altro"
-          ristoranti={ristorantiData}
-        />
+        <Ristoranti title="Italia: i migliori ristoranti e molto altro" ristoranti={ristorantiData} />
       </section>
 
-      {/* Poke Menu */}
+      <Restoraint />
+
       <section className="bg-gray-50 py-10">
-        {pokeItems.map((item, index) => (
-          <PokeMenuItem key={index} item={item} />
-        ))}
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8">Menu Pokè</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {pokeItems.map((item, index) => (
+              <div key={index} className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow">
+                <img src={item.image} alt={item.name} className="w-full h-48 object-cover rounded-md mb-4" />
+                <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                <p className="text-md font-bold text-green-600 mt-2">{item.price}</p>
+                <button
+                  onClick={() => handleOpenModal(item)}
+                  className="mt-3 bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition"
+                >
+                  Personalizza
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+        {isModalOpen && selectedPokeItem && (
+          <PokeMenuItem item={selectedPokeItem} onClose={handleCloseModal} />
+        )}
       </section>
 
-      {/* Features */}
-      <section className="bg-gray-50 py-10">
+      <section className="bg-white py-14">
         <Features title="Consegniamo tutto ciò che vuoi" features={featuresData} />
       </section>
 
-      {/* Città */}
-      <section className="bg-white py-10">
-        <Citta />
-      </section>
-
-      {/* Domande frequenti */}
-      <section className="bg-gray-50 py-10">
-        <FAQSection faqs={faqs} />
-      </section>
-
-      {/* Lavora con noi */}
-      <section className="bg-yellow-50 py-10">
+      <section className="bg-yellow-50 py-14">
         <LavoraConNoi sezioni={lavoraConNoiData} />
       </section>
 
-      {/* Scarica App */}
-      <section className="bg-white py-10">
+      <section className="bg-white py-14">
+        <Citta />
+      </section>
+
+      <section className="bg-gray-50 py-14">
+        <FAQSection faqs={faqs} />
+      </section>
+
+      <section className="bg-white py-14">
         <ScaricaApp />
       </section>
 
-      {/* Privacy */}
-      <section className="bg-gray-100 py-10">
+      {/* <section className="bg-gray-100 py-14">
         <Privacy
           title="Gestisci i tuoi cookie"
           description="Utilizziamo cookie propri e di terze parti e altre tecnologie per offrirti il miglior servizio possibile, analizzare l'utilizzo della nostra piattaforma e fornirti annunci personalizzati. Puoi modificare le impostazioni dei cookie in qualsiasi momento."
@@ -172,7 +191,9 @@ const HomePage = () => {
           rejectText="Rifiuta"
           acceptText="Accetta tutti"
         />
-      </section>
+      </section> */}
+
+      <Footer />
     </div>
   );
 };
